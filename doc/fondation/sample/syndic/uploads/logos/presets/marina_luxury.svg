@@ -1,0 +1,18 @@
+<svg viewBox="0 0 120 120" width="120" height="120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg_marina" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0A192F"/>
+      <stop offset="100%" stop-color="#1E3A8A"/>
+    </linearGradient>
+    <linearGradient id="grad_marina" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="50%" stop-color="#60A5FA"/>
+      <stop offset="100%" stop-color="#A855F7"/>
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="112" height="112" rx="28" fill="url(#bg_marina)" stroke="url(#grad_marina)" stroke-width="3"/>
+  <!-- Voilier & Vagues Marina -->
+  <path d="M58 26V74M58 28L86 64H58M58 36L38 64H58" stroke="url(#grad_marina)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M26 80C36 76 44 82 54 80C64 78 72 82 82 80C88 78 92 80 96 80" stroke="url(#grad_marina)" stroke-width="3" stroke-linecap="round"/>
+  <text x="60" y="98" text-anchor="middle" fill="#FFFFFF" font-family="'Poppins', sans-serif" font-size="11" font-weight="700" letter-spacing="2">MARINA</text>
+</svg>

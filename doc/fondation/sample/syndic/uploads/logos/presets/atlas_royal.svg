@@ -1,0 +1,19 @@
+<svg viewBox="0 0 120 120" width="120" height="120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg_atlas" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#14021C"/>
+      <stop offset="100%" stop-color="#2D0B3A"/>
+    </linearGradient>
+    <linearGradient id="grad_atlas" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#D91C6E"/>
+      <stop offset="50%" stop-color="#F26968"/>
+      <stop offset="100%" stop-color="#F27835"/>
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="112" height="112" rx="28" fill="url(#bg_atlas)" stroke="url(#grad_atlas)" stroke-width="3"/>
+  <!-- Couronne Royale & Montagnes Atlas -->
+  <path d="M30 76L46 48L60 62L74 44L90 76H30Z" fill="url(#grad_atlas)" opacity="0.4"/>
+  <path d="M42 76L60 48L78 76H42Z" fill="url(#grad_atlas)" opacity="0.85"/>
+  <polygon points="60,26 62,32 68,32 63,36 65,42 60,38 55,42 57,36 52,32 58,32" fill="#F27835"/>
+  <text x="60" y="96" text-anchor="middle" fill="#FFFFFF" font-family="'Poppins', sans-serif" font-size="11" font-weight="700" letter-spacing="2">ATLAS</text>
+</svg>

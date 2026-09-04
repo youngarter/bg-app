@@ -1,0 +1,123 @@
+# ---------------------------------------------------------------------------
+# Bayan — services d'infrastructure locaux
+#
+# Périmètre : PostgreSQL + Redis + MinIO uniquement.
+# L'application Laravel et Vite tournent sur la machine hôte, pas en conteneur.
+#
+#   docker compose up -d
+#   docker compose ps
+#   docker compose down          (les volumes sont conservés)
+#   docker compose down -v       (remise à zéro complète)
+# ---------------------------------------------------------------------------
+
+name: bayan
+
+services:
+  # -------------------------------------------------------------------------
+  # PostgreSQL 17 — base de données applicative
+  # -------------------------------------------------------------------------
+  postgres:
+    image: postgres:17-alpine
+    container_name: bayan-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_DATABASE:-bayan}
+      POSTGRES_USER: ${DB_USERNAME:-bayan}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-secret}
+      # Collation déterministe : les tris et comparaisons de chaînes doivent
+      # être stables entre les postes de développement et la production.
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=C"
+      TZ: ${APP_TIMEZONE:-Africa/Casablanca}
+      PGTZ: ${APP_TIMEZONE:-Africa/Casablanca}
+    ports:
+      - "${FORWARD_DB_PORT:-5432}:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      # Crée la base de test au premier démarrage (voir docker/postgres/).
+      - ./docker/postgres/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-bayan} -d ${DB_DATABASE:-bayan}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  # -------------------------------------------------------------------------
+  # Redis 7 — cache, sessions, files d'attente, verrous
+  # -------------------------------------------------------------------------
+  redis:
+    image: redis:7-alpine
+    container_name: bayan-redis
+    restart: unless-stopped
+    command: >
+      redis-server
+      --appendonly yes
+      --requirepass ${REDIS_PASSWORD:-secret}
+    ports:
+      - "${FORWARD_REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "--no-auth-warning", "-a", "${REDIS_PASSWORD:-secret}", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # -------------------------------------------------------------------------
+  # MinIO — stockage objet compatible S3
+  #
+  # Porte les pièces justificatives exigées par la V1 : factures, relevés,
+  # PV d'AG, actes de mutation, lettres de révocation. Toute écriture
+  # comptable doit résoudre une pièce (§10.1 ter du document de fondation).
+  # -------------------------------------------------------------------------
+  minio:
+    image: minio/minio:latest
+    container_name: bayan-minio
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${AWS_ACCESS_KEY_ID:-bayan}
+      MINIO_ROOT_PASSWORD: ${AWS_SECRET_ACCESS_KEY:-secretkey}
+      MINIO_REGION: ${AWS_DEFAULT_REGION:-us-east-1}
+    ports:
+      - "${FORWARD_MINIO_PORT:-9000}:9000"       # API S3
+      - "${FORWARD_MINIO_CONSOLE_PORT:-9001}:9001" # Console web
+    volumes:
+      - minio-data:/data
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # -------------------------------------------------------------------------
+  # Création des buckets — conteneur éphémère, s'arrête une fois terminé
+  # -------------------------------------------------------------------------
+  minio-init:
+    image: minio/mc:latest
+    container_name: bayan-minio-init
+    depends_on:
+      minio:
+        condition: service_healthy
+    environment:
+      AWS_BUCKET: ${AWS_BUCKET:-bayan-local}
+      MINIO_ROOT_USER: ${AWS_ACCESS_KEY_ID:-bayan}
+      MINIO_ROOT_PASSWORD: ${AWS_SECRET_ACCESS_KEY:-secretkey}
+    entrypoint: >
+      /bin/sh -c "
+        mc alias set local http://minio:9000 $${MINIO_ROOT_USER} $${MINIO_ROOT_PASSWORD};
+        mc mb --ignore-existing local/$${AWS_BUCKET};
+        mc mb --ignore-existing local/$${AWS_BUCKET}-test;
+        mc anonymous set none local/$${AWS_BUCKET};
+        mc anonymous set none local/$${AWS_BUCKET}-test;
+        echo 'Buckets prêts.';
+      "
+    restart: "no"
+
+volumes:
+  postgres-data:
+    driver: local
+  redis-data:
+    driver: local
+  minio-data:
+    driver: local

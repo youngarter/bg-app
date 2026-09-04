@@ -1,0 +1,15 @@
+# ==============================================================================
+# SyndicPro Maroc — Sécurité des Données SQLite
+# Dahir n° 1-02-298 (Loi 18-00) — Partitionnement Physique Air-Gap
+# ==============================================================================
+# Interdire formellement tout accès web direct aux fichiers de bases de données
+# (.sqlite, .db, .sql, .bak, journaux de transaction WAL/SHM)
+
+<IfModule mod_authz_core.c>
+    Require all denied
+</IfModule>
+
+<IfModule !mod_authz_core.c>
+    Order Deny,Allow
+    Deny from all
+</IfModule>

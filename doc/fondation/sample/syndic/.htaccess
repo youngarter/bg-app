@@ -1,0 +1,39 @@
+DirectoryIndex index.php index.html
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /Syndic/
+
+    # 1. Si le fichier ou dossier physique existe (ex: MgmtResidence, MgmtResident, MgmtConsole, assets, uploads)
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # 2. Format /GUID/resident/... -> Espace Resident (MgmtResident)
+    RewriteRule ^([a-f0-9\-]{36})/resident/login/?$ MgmtResident/$1/login.php [QSA,L]
+    RewriteRule ^([a-f0-9\-]{36})/resident/login\.php$ MgmtResident/$1/login.php [QSA,L]
+    RewriteRule ^([a-f0-9\-]{36})/resident/logout/?$ MgmtResident/$1/logout.php [QSA,L]
+    RewriteRule ^([a-f0-9\-]{36})/resident/logout\.php$ MgmtResident/$1/logout.php [QSA,L]
+    RewriteRule ^([a-f0-9\-]{36})/resident/quittance\.php$ MgmtResident/$1/quittance.php [QSA,L]
+    RewriteRule ^([a-f0-9\-]{36})/resident/pv_assemblee\.php$ MgmtResident/$1/pv_assemblee.php [QSA,L]
+    RewriteRule ^([a-f0-9\-]{36})/resident/actions/(.+)$ MgmtResident/$1/actions/$2 [QSA,L]
+    RewriteRule ^([a-f0-9\-]{36})/resident/index\.php$ MgmtResident/$1/index.php [QSA,L]
+    RewriteRule ^([a-f0-9\-]{36})/resident/?$ MgmtResident/$1/index.php [QSA,L]
+    RewriteRule ^([a-f0-9\-]{36})/resident/(.+)$ MgmtResident/$1/$2 [QSA,L]
+
+    # 3. Format /GUID/actions/(.+) -> MgmtResidence actions
+    RewriteRule ^([a-f0-9\-]{36})/actions/(.+)$ MgmtResidence/$1/actions/$2 [QSA,L]
+
+    # 4. Format /GUID/login ou /GUID/login/ -> MgmtResidence/login.php
+    RewriteRule ^([a-f0-9\-]{36})/login/?$ MgmtResidence/$1/login.php [QSA,L]
+    RewriteRule ^([a-f0-9\-]{36})/login\.php$ MgmtResidence/$1/login.php [QSA,L]
+    RewriteRule ^([a-f0-9\-]{36})/logout/?$ MgmtResidence/$1/logout.php [QSA,L]
+    RewriteRule ^([a-f0-9\-]{36})/logout\.php$ MgmtResidence/$1/logout.php [QSA,L]
+    RewriteRule ^([a-f0-9\-]{36})/quittance\.php$ MgmtResidence/$1/quittance.php [QSA,L]
+    RewriteRule ^([a-f0-9\-]{36})/pv_assemblee\.php$ MgmtResidence/$1/pv_assemblee.php [QSA,L]
+
+    # 5. Format /GUID/ ou /GUID/index.php -> MgmtResidence/index.php
+    RewriteRule ^([a-f0-9\-]{36})/index\.php$ MgmtResidence/$1/index.php [QSA,L]
+    RewriteRule ^([a-f0-9\-]{36})/?$ MgmtResidence/$1/index.php [QSA,L]
+    RewriteRule ^([a-f0-9\-]{36})/(.+)$ MgmtResidence/$1/$2 [QSA,L]
+</IfModule>

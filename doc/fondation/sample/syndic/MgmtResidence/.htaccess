@@ -1,0 +1,27 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /Syndic/MgmtResidence/
+
+    # Ne pas reecrire les fichiers ou repertoires existants
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # Actions sous GUID: /GUID/actions/(.+) -> actions/$2?tenant=$1
+    RewriteRule ^([a-f0-9\-]{36})/actions/(.+)$ actions/$2?tenant=$1 [QSA,L]
+
+    # Login et Logout
+    RewriteRule ^([a-f0-9\-]{36})/login/?$ login.php?tenant=$1 [QSA,L]
+    RewriteRule ^([a-f0-9\-]{36})/login\.php$ login.php?tenant=$1 [QSA,L]
+    RewriteRule ^([a-f0-9\-]{36})/logout/?$ logout.php?tenant=$1 [QSA,L]
+    RewriteRule ^([a-f0-9\-]{36})/logout\.php$ logout.php?tenant=$1 [QSA,L]
+
+    # Documents legaux
+    RewriteRule ^([a-f0-9\-]{36})/quittance\.php$ quittance.php?tenant=$1 [QSA,L]
+    RewriteRule ^([a-f0-9\-]{36})/pv_assemblee\.php$ pv_assemblee.php?tenant=$1 [QSA,L]
+
+    # Index
+    RewriteRule ^([a-f0-9\-]{36})/index\.php$ index.php?tenant=$1 [QSA,L]
+    RewriteRule ^([a-f0-9\-]{36})/?$ index.php?tenant=$1 [QSA,L]
+    RewriteRule ^([a-f0-9\-]{36})/(.+)$ index.php?tenant=$1&page=$2 [QSA,L]
+</IfModule>

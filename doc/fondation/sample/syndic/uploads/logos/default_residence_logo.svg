@@ -1,0 +1,24 @@
+<svg viewBox="0 0 120 120" width="120" height="120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg_def" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E0427"/>
+      <stop offset="100%" stop-color="#2E083B"/>
+    </linearGradient>
+    <linearGradient id="gold_grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#D91C6E"/>
+      <stop offset="50%" stop-color="#F26968"/>
+      <stop offset="100%" stop-color="#F27835"/>
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="112" height="112" rx="28" fill="url(#bg_def)" stroke="url(#gold_grad)" stroke-width="3"/>
+  <!-- Fronton & Colonnes Classiques -->
+  <path d="M60 22L28 42H92L60 22Z" fill="url(#gold_grad)" opacity="0.9"/>
+  <rect x="34" y="46" width="8" height="38" rx="2" fill="url(#gold_grad)" opacity="0.8"/>
+  <rect x="48" y="46" width="8" height="38" rx="2" fill="url(#gold_grad)" opacity="0.8"/>
+  <rect x="64" y="46" width="8" height="38" rx="2" fill="url(#gold_grad)" opacity="0.8"/>
+  <rect x="78" y="46" width="8" height="38" rx="2" fill="url(#gold_grad)" opacity="0.8"/>
+  <!-- Socle -->
+  <rect x="24" y="86" width="72" height="6" rx="2" fill="url(#gold_grad)"/>
+  <!-- Étoile Chérifienne au sommet -->
+  <polygon points="60,12 62,17 67,17 63,20 65,25 60,22 55,25 57,20 53,17 58,17" fill="#F27835"/>
+</svg>
