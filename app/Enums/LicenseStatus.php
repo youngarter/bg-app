@@ -9,6 +9,16 @@ enum LicenseStatus: string
     case ReadOnly = 'read_only';
     case Suspended = 'suspended';
 
+    public function label(): string
+    {
+        return match ($this) {
+            self::Active => 'Active',
+            self::Grace => 'Période de grâce',
+            self::ReadOnly => 'Lecture seule',
+            self::Suspended => 'Suspendue',
+        };
+    }
+
     public function allowsRead(): bool
     {
         return $this !== self::Suspended;

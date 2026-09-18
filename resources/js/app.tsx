@@ -32,7 +32,8 @@ createInertiaApp({
         );
     },
     progress: {
-        color: '#4B5563',
+        // Le jeton suit le thème clair/sombre : NProgress applique la valeur en CSS.
+        color: 'var(--primary)',
     },
 });
 

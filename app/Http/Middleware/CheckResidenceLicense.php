@@ -27,7 +27,23 @@ class CheckResidenceLicense
             return $next($request);
         }
 
-        $residence = $this->resolveResidence($request);
+        // Si le paramètre {residence} est présent dans l'URL, c'est lui qui fait foi exclusivement
+        if ($request->route() && $request->route()->hasParameter('residence')) {
+            $routeParam = $request->route('residence');
+            $residence = null;
+
+            if ($routeParam instanceof Residence) {
+                $residence = $routeParam;
+            } elseif (is_numeric($routeParam) || is_string($routeParam)) {
+                $residence = Residence::query()->withoutGlobalScopes()->find($routeParam);
+            }
+
+            if (! $residence) {
+                abort(404, 'Résidence introuvable.');
+            }
+        } else {
+            $residence = $this->resolveFallbackResidence($request);
+        }
 
         if (! $residence) {
             return $next($request);
@@ -48,20 +64,13 @@ class CheckResidenceLicense
         return $next($request);
     }
 
-    protected function resolveResidence(Request $request): ?Residence
+    protected function resolveFallbackResidence(Request $request): ?Residence
     {
-        $routeParam = $request->route('residence');
-
-        if ($routeParam instanceof Residence) {
-            return $routeParam;
-        }
-
-        if (is_numeric($routeParam)) {
-            return Residence::find((int) $routeParam);
-        }
-
         $id = $request->header('X-Residence-Id') ?? $request->input('residence_id');
+        if ($id) {
+            return is_numeric($id) ? Residence::query()->withoutGlobalScopes()->find((int) $id) : null;
+        }
 
-        return $id ? Residence::find((int) $id) : null;
+        return ResidenceContext::get();
     }
 }

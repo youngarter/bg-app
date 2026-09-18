@@ -4,6 +4,7 @@ use App\Http\Middleware\CheckResidenceAttachment;
 use App\Http\Middleware\CheckResidenceLicense;
 use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
+use App\Http\Middleware\SetResidenceContext;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -21,11 +22,13 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->web(append: [
             HandleAppearance::class,
+            SetResidenceContext::class,
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
         ]);
 
         $middleware->alias([
+            'residence.context' => SetResidenceContext::class,
             'residence.license' => CheckResidenceLicense::class,
             'residence.attachment' => CheckResidenceAttachment::class,
         ]);

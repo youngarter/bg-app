@@ -11,6 +11,7 @@ use Carbon\CarbonInterface;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -180,6 +181,52 @@ class User extends Authenticatable
             };
         }
 
+        // 3. Check active ownership as copropriétaire
+        $hasActiveOwnership = $residence->owners()
+            ->withoutGlobalScopes()
+            ->where('user_id', $this->id)
+            ->whereHas('ownerships', fn ($q) => $q->activeAt($date))
+            ->exists();
+
+        if ($hasActiveOwnership) {
+            return ResidenceUserRole::Coproprietaire;
+        }
+
         return null;
+    }
+
+    /**
+     * Get all residences accessible to this user, sorted deterministically by name.
+     *
+     * @return Collection<int, Residence>
+     */
+    public function accessibleResidences(?CarbonInterface $at = null): Collection
+    {
+        if ($this->isPlatformAdmin()) {
+            return Residence::query()->withoutGlobalScopes()->orderBy('nom')->get();
+        }
+
+        $date = $at ?? now();
+
+        return Residence::query()
+            ->withoutGlobalScopes()
+            ->where(function ($query) use ($date) {
+                $query->whereHas('accesses', function ($q) {
+                    $q->where('status', ResidenceAccessStatus::Active->value)
+                        ->whereHas('syndicCompany.users', fn ($u) => $u->where('users.id', $this->id));
+                })
+                    ->orWhereHas('roles', function ($q) use ($date) {
+                        $q->where('user_id', $this->id)->activeAt($date);
+                    })
+                    ->orWhereHas('delegations', function ($q) use ($date) {
+                        $q->where('user_id', $this->id)->activeAt($date);
+                    })
+                    ->orWhereHas('owners', function ($q) use ($date) {
+                        $q->where('user_id', $this->id)
+                            ->whereHas('ownerships', fn ($o) => $o->activeAt($date));
+                    });
+            })
+            ->orderBy('nom')
+            ->get();
     }
 }

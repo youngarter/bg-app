@@ -12,8 +12,17 @@ export default defineConfig({
             input: ['resources/css/app.css', 'resources/js/app.tsx'],
             refresh: true,
             fonts: [
-                bunny('Instrument Sans', {
-                    weights: [400, 500, 600],
+                // Poppins porte la voix de la marque (titres, logotype).
+                bunny('Poppins', {
+                    weights: [500, 600, 700],
+                }),
+                // Inter porte les données : chiffres tabulaires, tableaux denses.
+                bunny('Inter', {
+                    weights: [400, 500, 600, 700],
+                }),
+                // JetBrains Mono porte les références comptables : AF-2026-001, 3422.
+                bunny('JetBrains Mono', {
+                    weights: [400, 500],
                 }),
             ],
         }),

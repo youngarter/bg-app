@@ -8,10 +8,34 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
+    /* Inter porte les données, Poppins la voix de la marque,
+       JetBrains Mono les références comptables. */
     --font-sans:
-        'Instrument Sans', ui-sans-serif, system-ui, sans-serif,
+        'Inter', ui-sans-serif, system-ui, sans-serif,
         'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
         'Noto Color Emoji';
+    --font-display: 'Poppins', 'Inter', ui-sans-serif, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace;
+
+    /* Marque — le magenta vif est graphique, il ne passe pas AA en texte.
+       Toute couleur portant du texte ou une action utilise --color-brand. */
+    --color-brand-vivid: #ff007f;
+    --color-brand: var(--brand);
+    --color-brand-foreground: #ffffff;
+    --color-brand-orange: #ff5500;
+
+    /* Sémantique métier — volontairement hors de la plage magenta -> orange,
+       que le dégradé de marque occupe déjà. */
+    --color-ok: var(--ok);
+    --color-ok-surface: var(--ok-surface);
+    --color-warn: var(--warn);
+    --color-warn-surface: var(--warn-surface);
+    --color-crit: var(--crit);
+    --color-crit-surface: var(--crit-surface);
+    --color-info: var(--info);
+    --color-info-surface: var(--info-surface);
+
+    --radius-xl: calc(var(--radius) + 5px);
 
     --radius-lg: var(--radius);
     --radius-md: calc(var(--radius) - 2px);
@@ -62,74 +86,111 @@
 }
 
 :root {
-    --background: oklch(1 0 0);
-    --foreground: oklch(0.145 0 0);
-    --card: oklch(1 0 0);
-    --card-foreground: oklch(0.145 0 0);
-    --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.145 0 0);
-    --primary: oklch(0.205 0 0);
-    --primary-foreground: oklch(0.985 0 0);
-    --secondary: oklch(0.97 0 0);
-    --secondary-foreground: oklch(0.205 0 0);
-    --muted: oklch(0.97 0 0);
-    --muted-foreground: oklch(0.556 0 0);
-    --accent: oklch(0.97 0 0);
-    --accent-foreground: oklch(0.205 0 0);
-    --destructive: oklch(0.577 0.245 27.325);
-    --destructive-foreground: oklch(0.577 0.245 27.325);
-    --border: oklch(0.922 0 0);
-    --input: oklch(0.922 0 0);
-    --ring: oklch(0.87 0 0);
-    --chart-1: oklch(0.646 0.222 41.116);
-    --chart-2: oklch(0.6 0.118 184.704);
-    --chart-3: oklch(0.398 0.07 227.392);
-    --chart-4: oklch(0.828 0.189 84.429);
-    --chart-5: oklch(0.769 0.188 70.08);
-    --radius: 0.625rem;
-    --sidebar: oklch(0.985 0 0);
-    --sidebar-foreground: oklch(0.145 0 0);
-    --sidebar-primary: oklch(0.205 0 0);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.97 0 0);
-    --sidebar-accent-foreground: oklch(0.205 0 0);
-    --sidebar-border: oklch(0.922 0 0);
-    --sidebar-ring: oklch(0.87 0 0);
+    /* Neutres teintés prune : aucun gris pur, chaque neutre tire vers #1c1220. */
+    --background: #faf7f9;
+    --foreground: #1c1220;
+    --card: #ffffff;
+    --card-foreground: #1c1220;
+    --popover: #ffffff;
+    --popover-foreground: #1c1220;
+
+    /* Magenta assombri : 6,0:1 sur blanc. Le #ff007f de la charte n'atteint
+       que 3,8:1 et reste donc réservé au logo et aux graphiques. */
+    --brand: #c4005f;
+    --primary: #c4005f;
+    --primary-foreground: #ffffff;
+
+    --secondary: #f3eef2;
+    --secondary-foreground: #1c1220;
+    --muted: #f3eef2;
+    --muted-foreground: #7a6a7c;
+    --accent: #f3eef2;
+    --accent-foreground: #1c1220;
+
+    --destructive: #9b2226;
+    --destructive-foreground: #ffffff;
+
+    --border: #e5dce4;
+    --input: #e5dce4;
+    --ring: #c4005f;
+
+    --ok: #0e7c66;
+    --ok-surface: #e3f3ef;
+    --warn: #a45b00;
+    --warn-surface: #fbf0de;
+    --crit: #9b2226;
+    --crit-surface: #f9e7e6;
+    --info: #3a5a9b;
+    --info-surface: #e8edf7;
+
+    --chart-1: #c4005f;
+    --chart-2: #0e7c66;
+    --chart-3: #3a5a9b;
+    --chart-4: #a45b00;
+    --chart-5: #7a6a7c;
+
+    --radius: 0.5rem;
+
+    --sidebar: #ffffff;
+    --sidebar-foreground: #1c1220;
+    --sidebar-primary: #c4005f;
+    --sidebar-primary-foreground: #ffffff;
+    --sidebar-accent: #f3eef2;
+    --sidebar-accent-foreground: #1c1220;
+    --sidebar-border: #e5dce4;
+    --sidebar-ring: #c4005f;
 }
 
 .dark {
-    --background: oklch(0.145 0 0);
-    --foreground: oklch(0.985 0 0);
-    --card: oklch(0.145 0 0);
-    --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.145 0 0);
-    --popover-foreground: oklch(0.985 0 0);
-    --primary: oklch(0.985 0 0);
-    --primary-foreground: oklch(0.205 0 0);
-    --secondary: oklch(0.269 0 0);
-    --secondary-foreground: oklch(0.985 0 0);
-    --muted: oklch(0.269 0 0);
-    --muted-foreground: oklch(0.708 0 0);
-    --accent: oklch(0.269 0 0);
-    --accent-foreground: oklch(0.985 0 0);
-    --destructive: oklch(0.396 0.141 25.723);
-    --destructive-foreground: oklch(0.637 0.237 25.331);
-    --border: oklch(0.269 0 0);
-    --input: oklch(0.269 0 0);
-    --ring: oklch(0.439 0 0);
-    --chart-1: oklch(0.488 0.243 264.376);
-    --chart-2: oklch(0.696 0.17 162.48);
-    --chart-3: oklch(0.769 0.188 70.08);
-    --chart-4: oklch(0.627 0.265 303.9);
-    --chart-5: oklch(0.645 0.246 16.439);
-    --sidebar: oklch(0.205 0 0);
-    --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.985 0 0);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.269 0 0);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
-    --sidebar-border: oklch(0.269 0 0);
-    --sidebar-ring: oklch(0.439 0 0);
+    --background: #141019;
+    --foreground: #f3eef5;
+    --card: #1d1724;
+    --card-foreground: #f3eef5;
+    --popover: #1d1724;
+    --popover-foreground: #f3eef5;
+
+    /* Sur fond sombre le magenta doit s'eclaircir, pas s'assombrir. */
+    --brand: #ff5c9e;
+    --primary: #ff5c9e;
+    --primary-foreground: #1c1220;
+
+    --secondary: #261e2f;
+    --secondary-foreground: #f3eef5;
+    --muted: #261e2f;
+    --muted-foreground: #8e7f97;
+    --accent: #261e2f;
+    --accent-foreground: #f3eef5;
+
+    --destructive: #f08a83;
+    --destructive-foreground: #1c1220;
+
+    --border: #332940;
+    --input: #332940;
+    --ring: #ff5c9e;
+
+    --ok: #4fd1ae;
+    --ok-surface: #0e2e28;
+    --warn: #e5a44b;
+    --warn-surface: #3a2a12;
+    --crit: #f08a83;
+    --crit-surface: #38191a;
+    --info: #8faae4;
+    --info-surface: #1b2440;
+
+    --chart-1: #ff5c9e;
+    --chart-2: #4fd1ae;
+    --chart-3: #8faae4;
+    --chart-4: #e5a44b;
+    --chart-5: #8e7f97;
+
+    --sidebar: #1d1724;
+    --sidebar-foreground: #f3eef5;
+    --sidebar-primary: #ff5c9e;
+    --sidebar-primary-foreground: #1c1220;
+    --sidebar-accent: #261e2f;
+    --sidebar-accent-foreground: #f3eef5;
+    --sidebar-border: #332940;
+    --sidebar-ring: #ff5c9e;
 }
 
 @layer base {
@@ -139,5 +200,11 @@
 
     body {
         @apply bg-background text-foreground;
+    }
+
+    /* Les montants s'alignent en colonne dans toute l'application. */
+    table,
+    .tabular {
+        font-variant-numeric: tabular-nums;
     }
 }
