@@ -118,14 +118,30 @@ Conséquences sur `accounts` :
 | `7111` | Provisions sur opérations courantes | — | produit |
 | `7112` | Provisions sur travaux | — | produit |
 | `7113` | Avances | — | produit |
-| `119x` | Report à nouveau | — | passif |
+| `1191` | Résultat — excédent | — | passif |
+| `1199` | Résultat — déficit | — | passif |
 
 Le plan complet est chargé dès la V1 ; seuls ces comptes sont mouvementés.
+La nomenclature de référence est celle du décret n° 2-23-700, reprise en
+[24](24-plan-comptable-officiel.md).
 
-> ⚠️ La numérotation exacte de `3421`, `512x`, `516x`, `119x` reste **à confirmer sur
-> le document officiel avant le seed**. Voir [14](14-hors-perimetre.md) q.3.
-> Le schéma est indépendant de la réponse : le développement peut démarrer avec un
-> plan provisoire.
+> ⚠️ **Correction — `119x` n'est pas un report à nouveau.**
+> Les versions antérieures de ce fichier traitaient `119x` comme un compte de report
+> à nouveau, servant à la fois à solder les produits, à porter les soldes d'ouverture
+> et à rouvrir les comptes de bilan. C'est faux. Le décret définit `1191` / `1199`
+> comme le **résultat de l'exercice**, constatant l'écart entre produits et charges
+> **dans l'attente de la décision de l'assemblée sur son affectation**.
+>
+> Conséquence sur le cycle de clôture : solder les produits vers `119x` ne termine
+> plus l'exercice, cela l'arrête à un résultat **non affecté**. L'affectation est un
+> acte distinct, postérieur, qui relève de l'assemblée — voir
+> [24](24-plan-comptable-officiel.md) §3. Le compte recevant l'affectation finale
+> dépend de la décision votée et doit être validé par un professionnel avant d'être
+> automatisé.
+>
+> Le compte servant aux soldes d'ouverture d'un import et aux à-nouveaux est donc
+> **à déterminer séparément** : ce n'est pas `119x`, qui porte un résultat d'exercice,
+> pas un cumul historique.
 
 ### 3.3 Comptes collectifs et auxiliaires
 

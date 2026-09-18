@@ -47,8 +47,19 @@ Une accréditation révoquée ne se réactive pas : on en crée une nouvelle.
 | `active` → `suspended` | admin | motif | opérations gelées | non |
 | `suspended` → `active` | admin | — | — | non |
 | `active` → `expired` | système | `ends_on` atteint | — | non |
-| `active` → `terminated` | gérant/admin | **motif + pièce** | exercice en cours à clôturer | **oui** |
+| `active`/`suspended` → `terminated` | gérant/admin | **motif + pièce** | exercice en cours à clôturer | **oui** |
 | `expired`/`terminated` → `closed` | gérant | tous les exercices `closed` | — | **oui** |
+
+Un mandat `suspended` **n'expire jamais automatiquement**, même une fois son
+`ended_on` dépassé : le système ne touche pas à un mandat qu'un humain a gelé.
+Pour le sortir de cet état, l'administrateur doit acter formellement, soit une
+reprise (`suspended → active`, qui basculera en `expired` au prochain passage de
+`mandates:check-expiration`), soit une résiliation avec motif et pièce.
+
+Un mandat `suspended` **occupe toujours sa période** : la suspension gèle les
+opérations, elle ne libère pas le créneau. Le contrôle de non-chevauchement de
+`draft → active` et de `suspended → active` porte donc sur les mandats `active`
+**et** `suspended`.
 
 ---
 

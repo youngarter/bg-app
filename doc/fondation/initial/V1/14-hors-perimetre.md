@@ -61,8 +61,8 @@ Trois séparations structurent la V1. Chacune est protégée par un test nommé.
 |---|---|---|---|
 | 1 | **Loi 18-00** — sort juridique des arriérés à la mutation d'un lot (opposition du syndic) : le solde suit-il le lot, ou reste-t-il à la charge du vendeur ? | la règle de mutation automatique | **Aucun sur le schéma** : le gel du débiteur (verrou n°3) permet d'implémenter l'une ou l'autre règle après coup |
 | 2 | Format des tantièmes : base 1 000 ou 10 000 par défaut ? Configurable par résidence ? | — | nul, `total_tantiemes` est déjà une colonne |
-| 3 | ⚠️ **Plan comptable de référence** — numérotation exacte de `3421`, `512x`, `516x`, `119x`, `13x`. À sourcer auprès du **texte officiel ou d'un expert-comptable, jamais à deviner** | **le seed, pas le code** | le schéma est indépendant ; le développement démarre avec un plan provisoire |
-| 4 | **Approbation des comptes en AG** : la réglementation impose-t-elle l'approbation en assemblée et la répartition du résultat ? *(même source que q.3)* | [18](18-etats-financiers.md) §5 | **si oui, l'AG cesse d'être un simple registre** — c'est la seule question qui pourrait rouvrir le découplage n°2 |
+| 3 | ~~**Plan comptable de référence**~~ — **répondu** : décret n° 2-23-700 du 23/01/2025. Nomenclature reprise en [24](24-plan-comptable-officiel.md). Reste à confronter au Bulletin officiel et à trancher le niveau de subdivision (`651`/`6514`) | le seed | la numérotation déduite par [08](08-ledger-comptable.md) est corroborée ; `119x` était en revanche **mal interprété** |
+| 4 | **Approbation des comptes en AG** — **répondu : oui.** `1191`/`1199` constatent le résultat *dans l'attente de la décision de l'assemblée sur son affectation*. Restent à valider les **modalités** d'affectation, pas son existence | [18](18-etats-financiers.md) §5, [24](24-plan-comptable-officiel.md) §3 | **le découplage n°2 est partiellement rouvert** : l'AG reste découplée du budget et du mandat, mais acquiert un effet comptable propre sur le résultat |
 | 5 | **Fonds travaux** : la loi impose-t-elle un compte bancaire dédié ? | [15](15-tresorerie-depenses.md) §8 | si oui, le niveau 3 devient obligatoire au lieu d'optionnel |
 | 6 | Seuils légaux de quorum et de majorité par type de résolution | [16](16-assemblees-generales.md) §2 | nul : déjà configurables par résidence |
 | 7 | Notifications : quels événements déclenchent un email au copropriétaire (nouvel appel, relance, reçu) ? | — | opérationnel |
@@ -92,9 +92,10 @@ Trois séparations structurent la V1. Chacune est protégée par un test nommé.
 - [ ] La liste des exclusions du §1 est acceptée
 
 ### Préalables externes
-- [ ] Question 3 (plan comptable) : source identifiée, plan provisoire arrêté
-- [ ] Question 4 (approbation en AG) : lecture engagée — **seule question pouvant
-      rouvrir le découplage AG**
+- [x] Question 3 (plan comptable) : source identifiée — décret n° 2-23-700, voir [24](24-plan-comptable-officiel.md)
+- [ ] Question 3 bis : nomenclature confrontée au Bulletin officiel et validée par un expert-comptable
+- [x] Question 4 (approbation en AG) : répondue — l'AG affecte le résultat
+- [ ] Question 4 bis : modalités d'affectation (cas A à D) validées avant toute automatisation
 - [ ] Question 1 (loi 18-00) : lecture engagée, sans bloquer le code
 
 ### Tests

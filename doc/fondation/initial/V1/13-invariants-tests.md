@@ -26,6 +26,15 @@
 | T3 | Un seul exercice `open` par résidence à la fois | résidence |
 | T4 | Chaque exercice appartient à exactement un mandat | exercice |
 
+Les quatre invariants temporels sont garantis **par PostgreSQL**, pas seulement par
+les Actions : T1 par une contrainte `EXCLUDE USING gist`, T3 par un index unique
+partiel sur `state IN ('open', 'closing')`, T2 et T4 par le trigger
+`exercises_within_mandate`. T2 croise deux tables : ni un `CHECK` ni une contrainte
+d'exclusion ne peuvent l'exprimer, le trigger est la seule garantie structurelle
+possible. Cette garantie est nécessaire — un seeder écrivant en base sans passer par
+`CreateExerciseAction` avait effectivement produit des exercices débordant de leur
+mandat, et une factory rattachait l'exercice à un mandat d'une autre résidence.
+
 ### 1.3 Comptabilité
 
 | # | Invariant | Portée |

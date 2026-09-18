@@ -78,6 +78,7 @@ Verrouillés avant tout développement. Toute décision ultérieure s'y soumet.
 | [21-passation.md](21-passation.md) | Snapshot rapproché, écarts justifiés, à-nouveaux **séparés** |
 | [22-import-historique.md](22-import-historique.md) | Assistant, staging générique, import « soldes seuls » |
 | [23-branding-documents.md](23-branding-documents.md) | Charte, logos, quittances, PV, courriers, impression A4 |
+| [24-plan-comptable-officiel.md](24-plan-comptable-officiel.md) | Décret 2-23-700 : nomenclature, résultat, réserves, annexes, points à valider |
 
 ---
 
