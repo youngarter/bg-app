@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\ExerciseState;
+use App\Enums\MandateState;
 use App\Enums\ResidenceAccessStatus;
 use Database\Factories\ResidenceFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -74,6 +76,26 @@ class Residence extends Model
     public function delegations(): HasMany
     {
         return $this->hasMany(Delegation::class);
+    }
+
+    public function mandates(): HasMany
+    {
+        return $this->hasMany(Mandate::class);
+    }
+
+    public function activeMandate(): ?Mandate
+    {
+        return $this->mandates()->where('state', MandateState::Active->value)->first();
+    }
+
+    public function exercises(): HasMany
+    {
+        return $this->hasMany(Exercise::class);
+    }
+
+    public function openExercise(): ?Exercise
+    {
+        return $this->exercises()->where('state', ExerciseState::Open->value)->first();
     }
 
     public function currentSyndicCompany(): ?SyndicCompany

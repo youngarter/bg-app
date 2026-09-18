@@ -45,4 +45,9 @@ class SyndicCompany extends Model
     {
         return $this->hasMany(ResidenceAccess::class);
     }
+
+    public function mandates(): HasMany
+    {
+        return $this->hasMany(Mandate::class);
+    }
 }

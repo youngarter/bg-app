@@ -9,3 +9,4 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 Schedule::command('licenses:check-expiration')->daily();
+Schedule::command('mandates:check-expiration')->daily();
